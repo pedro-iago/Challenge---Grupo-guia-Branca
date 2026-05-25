@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.PendingActions
 import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -59,6 +60,7 @@ import com.innovagab.app.data.ideas.IdeaStatus
 import com.innovagab.app.ui.components.ApprovalActions
 import com.innovagab.app.ui.components.AppCard
 import com.innovagab.app.ui.components.EmptyState
+import com.innovagab.app.ui.components.SkeletonListContent
 import com.innovagab.app.ui.components.ModernTextField
 import com.innovagab.app.ui.components.PrioritySelector
 import com.innovagab.app.ui.components.StatusChip
@@ -99,14 +101,12 @@ fun PipelineScreen(viewModel: PipelineViewModel) {
 
             when {
                 state.isLoading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    }
+                    SkeletonListContent()
                 }
 
                 state.error != null -> {
                     EmptyState(
-                        icon = Icons.Default.Inbox,
+                        icon = Icons.Default.Warning,
                         title = "Erro ao carregar",
                         subtitle = state.error ?: "Tente novamente mais tarde.",
                         modifier = Modifier.fillMaxSize(),

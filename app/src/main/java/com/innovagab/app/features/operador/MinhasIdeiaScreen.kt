@@ -1,7 +1,6 @@
 package com.innovagab.app.features.operador
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Inbox
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,13 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.innovagab.app.data.ideas.Idea
 import com.innovagab.app.data.ideas.IdeaStatus
 import com.innovagab.app.ui.components.EmptyState
 import com.innovagab.app.ui.components.IdeaCard
+import com.innovagab.app.ui.components.SkeletonListContent
 import com.innovagab.app.ui.components.color
 import com.innovagab.app.ui.theme.Spacing
 
@@ -70,14 +69,12 @@ fun MyIdeasScreen(
 
         when {
             state.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                }
+                SkeletonListContent()
             }
 
             state.error != null -> {
                 EmptyState(
-                    icon = Icons.Default.Inbox,
+                    icon = Icons.Default.Warning,
                     title = "Erro ao carregar",
                     subtitle = state.error ?: "Tente novamente mais tarde.",
                     modifier = Modifier.fillMaxSize(),

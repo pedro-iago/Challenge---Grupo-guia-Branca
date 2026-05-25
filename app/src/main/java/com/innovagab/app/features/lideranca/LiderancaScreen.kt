@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,6 +54,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.innovagab.app.data.ideas.IdeaStatus
 import com.innovagab.app.data.projects.ProjectStatus
 import com.innovagab.app.ui.components.AppCard
+import com.innovagab.app.ui.components.SkeletonListContent
 import com.innovagab.app.ui.theme.Error
 import com.innovagab.app.ui.theme.Info
 import com.innovagab.app.ui.theme.Primary
@@ -90,9 +90,7 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-        }
+        SkeletonListContent(count = 5)
         return
     }
 
@@ -495,7 +493,7 @@ private fun ChartSectionHeader(title: String, subtitle: String) {
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onBackground,
         )

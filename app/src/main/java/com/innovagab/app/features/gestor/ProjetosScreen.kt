@@ -19,9 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FolderOpen
-import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -46,6 +45,7 @@ import com.innovagab.app.data.projects.Project
 import com.innovagab.app.data.projects.ProjectStatus
 import com.innovagab.app.ui.components.AppCard
 import com.innovagab.app.ui.components.EmptyState
+import com.innovagab.app.ui.components.SkeletonListContent
 import com.innovagab.app.ui.theme.Error
 import com.innovagab.app.ui.theme.Info
 import com.innovagab.app.ui.theme.Primary
@@ -101,14 +101,12 @@ fun ProjectsScreen(
 
         when {
             state.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                }
+                SkeletonListContent()
             }
 
             state.error != null -> {
                 EmptyState(
-                    icon = Icons.Default.Inbox,
+                    icon = Icons.Default.Warning,
                     title = "Erro ao carregar",
                     subtitle = state.error ?: "Tente novamente.",
                     modifier = Modifier.fillMaxSize(),

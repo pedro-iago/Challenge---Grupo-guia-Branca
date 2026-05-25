@@ -20,12 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Assessment
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Inbox
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -46,7 +43,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.innovagab.app.data.projects.Project
 import com.innovagab.app.data.projects.ProjectStatus
 import com.innovagab.app.ui.components.AppCard
+import com.innovagab.app.ui.components.AppPrimaryButton
 import com.innovagab.app.ui.components.EmptyState
+import com.innovagab.app.ui.components.SkeletonListContent
 import com.innovagab.app.ui.theme.Primary
 import com.innovagab.app.ui.theme.Radius
 import com.innovagab.app.ui.theme.Spacing
@@ -67,14 +66,12 @@ fun ProjectDetailsScreen(
 
     when {
         state.isLoading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-            }
+            SkeletonListContent(count = 3)
         }
 
         state.project == null -> {
             EmptyState(
-                icon = Icons.Default.Inbox,
+                icon = Icons.Default.FolderOpen,
                 title = "Projeto não encontrado",
                 subtitle = "Este projeto pode ter sido removido.",
                 modifier = Modifier.fillMaxSize(),
@@ -115,16 +112,10 @@ private fun ProjectDetailsContent(
                 Spacer(Modifier.height(Spacing.md))
                 ProjectTimelineCard(project = project)
                 Spacer(Modifier.height(Spacing.md))
-                Button(
+                AppPrimaryButton(
+                    text = "Editar Indicadores",
                     onClick = onEditClick,
-                    shape = RoundedCornerShape(Radius.md),
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                ) {
-                    Text("Editar Indicadores", style = MaterialTheme.typography.labelLarge)
-                }
+                )
             }
         }
     }

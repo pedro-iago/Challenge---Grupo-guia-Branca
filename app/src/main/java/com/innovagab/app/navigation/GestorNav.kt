@@ -2,10 +2,11 @@ package com.innovagab.app.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +28,24 @@ import com.innovagab.app.features.gestor.PipelineViewModel
 import com.innovagab.app.features.gestor.ProjectDetailsScreen
 import com.innovagab.app.features.gestor.ProjectViewModel
 import com.innovagab.app.features.gestor.ProjectsScreen
+import com.innovagab.app.features.lideranca.StrategiesScreen
+import com.innovagab.app.features.lideranca.StrategiesViewModel
+import com.innovagab.app.features.lideranca.StrategyDetailsScreen
+import com.innovagab.app.features.recognition.LeaderboardScreen
+import com.innovagab.app.features.recognition.RecognitionViewModel
+import com.innovagab.app.features.recognition.UserAchievementsScreen
 import com.innovagab.app.ui.components.AppBottomBar
 import com.innovagab.app.ui.components.AppTopBar
 import com.innovagab.app.ui.components.BottomNavItem
 
 private const val PIPELINE = "pipeline"
 private const val PROJETOS = "projetos"
+private const val ESTRATEGIAS = "estrategias"
+private const val RECONHECIMENTO = "reconhecimento"
 private const val PROJECT_DETAIL = "project_detail/{projectId}"
 private const val EDIT_PROJECT = "edit_project/{projectId}"
+private const val STRATEGY_DETAIL = "strategy_detail/{strategyId}"
+private const val USER_ACHIEVEMENTS = "user_achievements/{userId}"
 
 @Composable
 fun GestorNav(onSignOut: () -> Unit) {
@@ -44,20 +55,30 @@ fun GestorNav(onSignOut: () -> Unit) {
 
     val pipelineViewModel: PipelineViewModel = viewModel()
     val projectViewModel: ProjectViewModel = viewModel()
+    val strategiesViewModel: StrategiesViewModel = viewModel()
+    val recognitionViewModel: RecognitionViewModel = viewModel()
 
     val isOnSubscreen = currentRoute.startsWith("project_detail") ||
-        currentRoute.startsWith("edit_project")
+        currentRoute.startsWith("edit_project") ||
+        currentRoute.startsWith("strategy_detail") ||
+        currentRoute.startsWith("user_achievements")
 
     val tabs = listOf(
         BottomNavItem(PIPELINE, "Pipeline", Icons.Default.AccountTree),
         BottomNavItem(PROJETOS, "Projetos", Icons.Default.FolderOpen),
+        BottomNavItem(ESTRATEGIAS, "Estratégias", Icons.Default.Flag),
+        BottomNavItem(RECONHECIMENTO, "Ranking", Icons.Default.WorkspacePremium),
     )
 
     val pageTitle = when {
         currentRoute == PIPELINE -> "Pipeline"
         currentRoute == PROJETOS -> "Projetos"
+        currentRoute == ESTRATEGIAS -> "Estratégias"
+        currentRoute == RECONHECIMENTO -> "Reconhecimento"
         currentRoute.startsWith("project_detail") -> "Detalhes do Projeto"
         currentRoute.startsWith("edit_project") -> "Editar Projeto"
+        currentRoute.startsWith("strategy_detail") -> "Detalhes"
+        currentRoute.startsWith("user_achievements") -> "Conquistas"
         else -> "Gestão"
     }
 
@@ -114,6 +135,22 @@ fun GestorNav(onSignOut: () -> Unit) {
                     },
                 )
             }
+            composable(ESTRATEGIAS) {
+                StrategiesScreen(
+                    viewModel = strategiesViewModel,
+                    canEdit = false,
+                    onStrategyClick = { id -> navController.navigate("strategy_detail/$id") },
+                )
+            }
+            composable(RECONHECIMENTO) {
+                LeaderboardScreen(
+                    viewModel = recognitionViewModel,
+                    currentUserId = recognitionViewModel.currentUserId,
+                    canGrant = false,
+                    onUserClick = { userId -> navController.navigate("user_achievements/$userId") },
+                    onGrantClick = {},
+                )
+            }
             composable(
                 route = PROJECT_DETAIL,
                 arguments = listOf(navArgument("projectId") { type = NavType.StringType }),
@@ -135,6 +172,26 @@ fun GestorNav(onSignOut: () -> Unit) {
                     viewModel = projectViewModel,
                     onSaveSuccess = { navController.popBackStack() },
                 )
+            }
+            composable(
+                route = STRATEGY_DETAIL,
+                arguments = listOf(navArgument("strategyId") { type = NavType.StringType }),
+            ) { backStack ->
+                val strategyId = backStack.arguments?.getString("strategyId") ?: return@composable
+                StrategyDetailsScreen(
+                    strategyId = strategyId,
+                    viewModel = strategiesViewModel,
+                    canEdit = false,
+                    onEditClick = {},
+                    onDeleted = { navController.popBackStack() },
+                )
+            }
+            composable(
+                route = USER_ACHIEVEMENTS,
+                arguments = listOf(navArgument("userId") { type = NavType.StringType }),
+            ) { backStack ->
+                val userId = backStack.arguments?.getString("userId") ?: return@composable
+                UserAchievementsScreen(userId = userId, viewModel = recognitionViewModel)
             }
         }
     }
