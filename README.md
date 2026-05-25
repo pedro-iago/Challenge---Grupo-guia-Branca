@@ -1,28 +1,3 @@
-Perfeito.
-Isso aqui é EXATAMENTE o tipo de coisa que acelera equipe.
-
-Você vai subir um markdown no GitHub tipo:
-
-```text id="jlwm3w"
-IMPLEMENTATION_NEXT_STEPS.md
-```
-
-E seu amigo já entra:
-
-* entendendo contexto;
-* sabendo arquitetura;
-* sabendo prioridade;
-* sabendo padrão visual;
-* sabendo o que falta.
-
-Vou te entregar um markdown MUITO profissional, estilo:
-
-* engineering handoff;
-* product implementation plan;
-* enterprise sprint guide.
-
----
-
 # INNOVAGAB — IMPLEMENTATION NEXT STEPS
 
 ## CONTEXTO
