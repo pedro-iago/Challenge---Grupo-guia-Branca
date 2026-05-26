@@ -5,7 +5,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,9 +31,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +57,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.innovagab.app.BuildConfig
 import com.innovagab.app.data.auth.UserRole
 import com.innovagab.app.ui.components.AppTextField
 import com.innovagab.app.ui.theme.Background
@@ -349,6 +354,11 @@ private fun LoginForm(
             }
         }
 
+        if (BuildConfig.DEBUG) {
+            Spacer(Modifier.height(Spacing.lg))
+            QuickLoginSection(onSignIn = onSignIn)
+        }
+
         Spacer(Modifier.height(Spacing.xl))
 
         Text(
@@ -358,5 +368,88 @@ private fun LoginForm(
         )
 
         Spacer(Modifier.height(Spacing.lg))
+    }
+}
+
+@Composable
+private fun QuickLoginSection(onSignIn: (String, String) -> Unit) {
+    Card(
+        shape = RoundedCornerShape(Radius.lg),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        ),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = Spacing.md, vertical = Spacing.sm),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f))
+                Text(
+                    text = "⚡ Acesso rápido (Dev)",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f))
+            }
+
+            Spacer(Modifier.height(Spacing.sm))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                OutlinedButton(
+                    onClick = { onSignIn("operador@innovagab.com", "senha123") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.sm),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        horizontal = 4.dp,
+                        vertical = 8.dp,
+                    ),
+                ) {
+                    Text(
+                        text = "👷 Operador",
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                OutlinedButton(
+                    onClick = { onSignIn("gestor@innovagab.com", "senha123") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.sm),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        horizontal = 4.dp,
+                        vertical = 8.dp,
+                    ),
+                ) {
+                    Text(
+                        text = "📋 Gestor",
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                OutlinedButton(
+                    onClick = { onSignIn("lideranca@innovagab.com", "senha123") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.sm),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        horizontal = 4.dp,
+                        vertical = 8.dp,
+                    ),
+                ) {
+                    Text(
+                        text = "👑 Liderança",
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+        }
     }
 }

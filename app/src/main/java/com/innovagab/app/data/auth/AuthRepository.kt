@@ -1,5 +1,6 @@
 package com.innovagab.app.data.auth
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -42,17 +43,38 @@ class AuthRepository {
     }
 
     private suspend fun fetchProfile(uid: String): Result<UserProfile> {
+        val email = auth.currentUser?.email ?: ""
+        val displayName = auth.currentUser?.displayName
+
+        // Role derivado do email — funciona mesmo sem Firestore
+        val fallbackRole = when {
+            email.startsWith("operador") -> UserRole.OPERADOR
+            email.startsWith("gestor") -> UserRole.GESTOR
+            email.startsWith("lideranca") -> UserRole.LIDERANCA
+            else -> UserRole.OPERADOR
+        }
+        val fallbackName = displayName
+            ?: email.substringBefore("@").replaceFirstChar { it.uppercase() }
+
         return try {
             val doc = firestore.collection("users").document(uid).get().await()
-            val profile = UserProfile(
-                uid = uid,
-                name = doc.getString("name") ?: auth.currentUser?.displayName ?: "Usuário",
-                email = doc.getString("email") ?: auth.currentUser?.email ?: "",
-                role = UserRole.fromKey(doc.getString("role") ?: UserRole.OPERADOR.key),
-            )
-            Result.success(profile)
+
+            val role = UserRole.fromKey(doc.getString("role") ?: fallbackRole.key)
+            val name = doc.getString("name") ?: fallbackName
+
+            // Auto-cria documento se não existir (sem await para não bloquear)
+            if (!doc.exists()) {
+                Log.w("AuthRepository", "Documento não encontrado para uid=$uid — criando...")
+                firestore.collection("users").document(uid).set(
+                    mapOf("name" to fallbackName, "email" to email, "role" to fallbackRole.key)
+                )
+            }
+
+            Result.success(UserProfile(uid = uid, name = name, email = email, role = role))
         } catch (e: Exception) {
-            Result.failure(Exception("Erro ao carregar perfil. Tente novamente."))
+            // Firestore falhou, mas o usuário está autenticado — faz login com fallback
+            Log.e("AuthRepository", "Firestore indisponível, usando fallback. Erro: ${e.message}")
+            Result.success(UserProfile(uid = uid, name = fallbackName, email = email, role = fallbackRole))
         }
     }
 

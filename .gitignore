@@ -1,0 +1,30 @@
+# ── Android build ────────────────────────────────────────────────────────────
+build/
+.gradle/
+local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# ── Android Studio / IntelliJ ─────────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+.kotlin/
+
+# ── Gradle wrapper jar (gerado automaticamente) ───────────────────────────────
+gradle/wrapper/gradle-wrapper.jar
+
+# ── Scripts de seed (chave privada — NUNCA commitar) ─────────────────────────
+scripts/serviceAccountKey.json
+scripts/node_modules/
+scripts/package-lock.json
+
+# ── Arquivos de log ───────────────────────────────────────────────────────────
+*.log

@@ -391,7 +391,7 @@ private fun ProjectPieChart(statusCounts: Map<ProjectStatus, Int>) {
                 isDrawHoleEnabled = true
                 holeRadius = 55f
                 transparentCircleRadius = 60f
-                transparentCircleColor = android.graphics.Color.WHITE
+                setTransparentCircleColor(android.graphics.Color.WHITE)
                 setHoleColor(android.graphics.Color.WHITE)
                 setDrawEntryLabels(false)
                 setTouchEnabled(false)

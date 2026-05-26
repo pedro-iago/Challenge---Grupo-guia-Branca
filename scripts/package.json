@@ -1,0 +1,12 @@
+{
+  "name": "innovagab-seed",
+  "version": "1.0.0",
+  "description": "Script de seed para o Firebase do InnovaGAB",
+  "scripts": {
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "google-auth-library": "^10.6.2"
+  }
+}

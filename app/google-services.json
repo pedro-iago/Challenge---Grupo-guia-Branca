@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "REPLACE_WITH_PROJECT_NUMBER",
-    "project_id": "innovagab-app",
-    "storage_bucket": "innovagab-app.appspot.com"
+    "project_number": "438734436967",
+    "project_id": "fiap-aguia-branca-70c25",
+    "storage_bucket": "fiap-aguia-branca-70c25.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "REPLACE_WITH_APP_ID",
+        "mobilesdk_app_id": "1:438734436967:android:83e1a0edb7ad9ccfbab2c2",
         "android_client_info": {
           "package_name": "com.innovagab.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "REPLACE_WITH_API_KEY"
+          "current_key": "AIzaSyCP_OrrmeYVXZAE6D1qjSvPnarGhJ2h2xc"
         }
       ],
       "services": {
